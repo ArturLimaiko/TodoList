@@ -9,6 +9,8 @@ function App() {
 
     const todoListTitle_1: string = "What to learn?"
     const todoListTitle_2: string = "What to buy?"
+
+
     const tasks_1: Array<TaskType> = [
         {id: 1, isDone: false, title: "HTML&CSS"},
         {id: 2, isDone: true, title: "JS"},
