@@ -4,6 +4,7 @@ import React, {FC} from 'react';
 type TodoListPropsType = {
     title: string
     tasks: Array<TaskType>
+    // tasks: TaskType[] такой вариант тоже верный
 }
 
 export type TaskType = {
