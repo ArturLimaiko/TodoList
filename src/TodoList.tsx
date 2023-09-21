@@ -16,10 +16,6 @@ export type TaskType = {
 
 const TodoList: FC<TodoListPropsType> = ({title, tasks,removeTask}) => {
 
-    // const title = props.title
-    // const tasks = props.tasks
-    // const {title, tasks} = props
-
     return (
         <div className="todolist">
             <h3>{title}</h3>

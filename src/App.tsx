@@ -18,21 +18,12 @@ function App() {
         {id: 4, isDone: false, title: "Redux"},
     ]
 
-    let [tasks,setTasks ]  = useState(initTasks);
+    let [tasks, setTasks] = useState(initTasks);
 
-
-        // const tasks_2:Array<TaskType> = [
-        //     {id: 5, isDone: false, title: "Marmelade"},
-        //     {id: 6, isDone: true, title: "Nutella"},
-        //     {id: 7, isDone: false, title: "Nuts"},
-        //     {id: 8, isDone: true, title: "Snickers"},
-        // ]
-
-
-        function removeTask(id: number) {
-            let filteredTasks = tasks.filter(t => t.id !== id)
-            setTasks(filteredTasks);
-        }
+    function removeTask(id: number) {
+        let filteredTasks = tasks.filter(t => t.id !== id)
+        setTasks(filteredTasks);
+    }
 
     return (
         <div className="App">
@@ -41,9 +32,6 @@ function App() {
                 title={todoListTitle_1}
                 removeTask={removeTask}
             />
-            {/*<TodoList*/}
-            {/*    tasks={tasks_2}*/}
-            {/*    title={todoListTitle_2}/>*/}
         </div>
     );
 }
