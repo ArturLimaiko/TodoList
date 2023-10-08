@@ -5,6 +5,7 @@ import TodoList, {TaskType} from "./TodoList";
 
 export type FilterValuesType = "all" | "completed" | "active";
 
+//компонента App которая отрисовывает внутри себя Todolist
 function App() {
 
     //Storage
@@ -42,6 +43,11 @@ function App() {
         setFilter(value);
     }
 
+
+    //каждый Todolist получает на входе какие то данные - props. пропсы
+    // а так же получаем колбеки
+    //   removeTask={removeTask}
+    //   changeFilter={changeFilter}
     return (
         <div className="App">
             <TodoList

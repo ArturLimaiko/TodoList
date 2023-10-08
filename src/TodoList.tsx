@@ -16,6 +16,8 @@ export type TaskType = {
     isDone: boolean
 }
 
+
+//в props передаем данные . которые в свою очередь управляются PropsType которые описаны выше
 const TodoList: FC<TodoListPropsType> = ({title, tasks,removeTask,changeFilter}) => {
 
     return (
