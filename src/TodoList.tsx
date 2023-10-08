@@ -28,14 +28,24 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks,removeTask,changeFilter,a
         <div className="todolist">
             <h3>{title}</h3>
             <div>
-                <input value={newTaskTitle} onChange={(event)=> {
+                <input value={newTaskTitle}
+                       onChange={(event)=> {
                     // при попытке изменить input срабатывает событие onChange
                     // внутри onChange вызываем функцию и сетаем новое значение с помощью функции setNewTaskTitle
                     // и значение которое в момент onChange сидит в инпуте, мы можем получить с помощью
                     // объекта события event или e . в нем нас интересует event.currentTarget то есть это элемент с которым произошло событие
                     // обращаемся к event.currentTarget и берем его текущее значение event.currentTarget.value
                     //и мы это value отправляем в локальный state - setNewTaskTitle
-                    setNewTaskTitle(event.currentTarget.value)}}/>
+                    setNewTaskTitle(event.currentTarget.value)}}
+
+                       //когда произойдет нажатие клавиши вызови нашу функцию ,сюда придет объект event
+                    onKeyPress={(event) => {
+                        if (event.charCode === 13) {//если нажали  клавишу enter то таска добавится
+                            addTask(newTaskTitle)
+                            setNewTaskTitle("")
+                        }
+                    }}
+                />
                 {/*по нажатию добавляет новую task*/}
                 <button onClick={ () => {
                     addTask(newTaskTitle)
