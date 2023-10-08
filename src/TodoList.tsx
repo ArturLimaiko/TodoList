@@ -39,8 +39,6 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks,removeTask,changeFilter,a
                 {/*по нажатию добавляет новую task*/}
                 <button onClick={ () => {
                     addTask(newTaskTitle)
-                    //очищаем значение в state вызываем  setNewTaskTitle("") и добавляем пустую строку
-                    setNewTaskTitle("")
                 }}>+</button>
             </div>
             <ul>
