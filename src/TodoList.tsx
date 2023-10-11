@@ -29,7 +29,6 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
     const onNewTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTitle(event.currentTarget.value)
     }
-
     //функция для обработчика onKeyPress, в параметрах указали - event: KeyboardEvent<HTMLInputElement>
     const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.charCode === 13) {//если нажали  клавишу enter то таска добавится
@@ -37,7 +36,6 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
             setNewTaskTitle("") //после как таска добавилась строка ввода очиститься
         }
     }
-
     //функция добавления новой задачи
     const addTaskHandler = () => {
         addTask(newTaskTitle)

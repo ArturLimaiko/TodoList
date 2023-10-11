@@ -54,11 +54,9 @@ function App() {
         tasksForTodolist = tasks.filter( t => t.isDone === false);
     }
 
-
     function changeFilter( value:FilterValuesType ) {
         setFilter(value);
     }
-
 
     //каждый Todolist получает на входе какие то данные - props. пропсы
     // а так же получаем колбеки
