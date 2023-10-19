@@ -14,6 +14,7 @@ function App() {
     // const todoListTitle_2: string = "What to buy?"
 
     //удаление задач
+    //v1() генерация айдишек
     let [tasks, setTasks] = useState<Array<TaskType>>([
             {id: v1(), isDone: true, title: "HTML&CSS"},
             {id: v1(), isDone: true, title: "JS"},
@@ -21,7 +22,6 @@ function App() {
             {id: v1(), isDone: false, title: "Redux"},
         ]
     );
-
     console.log(tasks)
 
     //фильтрация задач
@@ -34,15 +34,13 @@ function App() {
         setTasks(filteredTasks);
     }
 
-
-
     function addTask (title: string) {//функция добавления новой таски
-        let newTask = {id: v1(),
-            title: title,
-            isDone: false
-        };//сгенерируем новый объект такси у нее есть id title isDone
-        let newTasks = [ newTask, ...tasks]; //если мы хотим получить новый массив в котором добавилась task, то мы должны создать новый массив newTasks и сказать добавь новую newTasks в начало массива, а затем добавь те таски которые сидели в старом массиве tasks , будет выглядеть так let newTasks = [ newTask, ...tasks];
-        //первым элементом положили новый объект а последним элементом - достали все объекты из старого массива ...tasks];
+        //добавим к новой переменной объект c таской
+        let newTask = {id: v1(), title: title, isDone: false};//сгенерируем новый объект такси у нее есть id title isDone
+        let newTasks = [ newTask, ...tasks];
+        // с помощью метода деструктуризации мы берем
+        // если мы хотим получить новый массив в котором добавилась task, то мы должны создать новый массив newTasks и сказать добавь новую newTasks в начало массива, а затем добавь те таски которые сидели в старом массиве tasks , будет выглядеть так let newTasks = [ newTask, ...tasks];
+        // первым элементом положили новый объект а последним элементом - достали все объекты из старого массива ...tasks];
         setTasks(newTasks); // - тут засовываем новый массив с добавленной  новой newTask
     }
 

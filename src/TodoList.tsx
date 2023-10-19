@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, KeyboardEvent, MouseEventHandler, useState} from 'react';
+import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from "./App";
 
 
@@ -29,13 +29,16 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
     const onNewTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTitle(event.currentTarget.value)
     }
-    //функция для обработчика onKeyPress, в параметрах указали - event: KeyboardEvent<HTMLInputElement>
+
+    // функция для обработчика onKeyPress, по скольку функцию вынесли из инпута то надо ее протипизировать что бы реакт понял что мы хотим
+    // по этому в параметрах указали - event: KeyboardEvent<HTMLInputElement>
     const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.charCode === 13) {//если нажали  клавишу enter то таска добавится
+        if (event.key === "Enter") {//если нажали  клавишу ENTER то таска добавится
             addTask(newTaskTitle) //добавляется таска
             setNewTaskTitle("") //после как таска добавилась строка ввода очиститься
         }
     }
+
     //функция добавления новой задачи
     const addTaskHandler = () => {
         addTask(newTaskTitle)
@@ -43,48 +46,49 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
         setNewTaskTitle("")
     }
 
-
     //ФУНКЦИИ С ФИЛЬТРАМИ
     const onAllClickHandler = () => changeFilter("all");
     const onActiveClickHandler = () => changeFilter("active");
     const onCompletedClickHandler = () => changeFilter("completed");
 
+    // Выносим функцию map в отдельную переменную
+    {/*проходимся map вызывает стрелочную функцию внутри мы создаем новую функцию колбек
+     которой передаем каждую кнопку х по этому у каждой кнопки x свой колбек */
+    }
+    const mapped = tasks.map(t => {
+        //объявляем функцию onRemoveHandler . каждый раз onRemoveHandler обращается к своей таске
+        //через свой id и этот onRemoveHandler отдаем каждый раз новой созданной кнопке
+        const onRemoveHandler = () => {
+            removeTask(t.id)
+        }
+        return (<li key={t.id}>
+            <input type="checkbox" checked={t.isDone}/>
+            <span>{t.title}</span>
+            {/*ссылка на Функцию удаления не общая. мы не можем вынести ее наверх.она своя у каждой <li> */}
+            <button onClick={onRemoveHandler}>x</button>
+        </li>)
+    })
 
     return (
         <div className="todolist">
             <h3>{title}</h3>
             <div>
                 <input value={newTaskTitle}
-                    //инпут сам вызовет функцию onNewTitleChangeHandler ,когда произойдет событие onChange
+                    //инпут сам вызовет ссылку на функцию onNewTitleChangeHandler ,когда произойдет событие onChange
                        onChange={onNewTitleChangeHandler}
 
+                    //по скольку печатаем в инпуте соответственно и наблюдателя функцию onKeyPress вешаем сюда же
                     //когда произойдет нажатие клавиши вызови нашу функцию onKeyPressHandler,сюда придет объект event
                        onKeyPress={onKeyPressHandler}
                 />
-                {/*по нажатию добавляет новую task*/}
+                {/*по нажатию добавляет новую task( в параметрах ссылка на функцию addTaskHandler)*/}
                 <button onClick={addTaskHandler}>+</button>
             </div>
             <ul>
-                {/*проходимся map вызывает стрелочную функцию внутри мы создаем новую функцию колбек
-                которой передаем каждую кнопку х по этому у каждой кнопки x свой колбек */}
-                {
-                    tasks.map(t => {
-                        //объявляем функцию onRemoveHandler . каждый раз onRemoveHandler обращается к своей таске
-                        //через свой id и этот onRemoveHandler отдаем каждый раз новой созданной кнопке
-                        const onRemoveHandler = () => {
-                            removeTask(t.id)
-                        }
-                        return <li key={t.id}>
-                            <input type="checkbox" checked={t.isDone}/>
-                            <span>{t.title}</span>
-                            {/*Функция удаления не общая. мы не можем вынести ее наверх.она своя у каждой <li> */}
-                            <button onClick={onRemoveHandler}>x</button>
-                        </li>
-                    })
-                }
+                {mapped}
             </ul>
             <div>
-                {/*//передаем функции в кнопки. при клике говорим что вызывай функцию обработчик.onAllClickHandler onActiveClickHandler onCompletedClickHandler*/}
+                {/*//передаем !!!ссылку на функцию!!! в кнопки. при клике говорим что вызывай функцию обработчик.onAllClickHandler onActiveClickHandler onCompletedClickHandler*/}
                 <button onClick={onAllClickHandler}>All</button>
                 <button onClick={onActiveClickHandler}>Active</button>
                 <button onClick={onCompletedClickHandler}>Completed</button>
