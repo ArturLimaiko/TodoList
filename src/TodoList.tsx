@@ -1,5 +1,6 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from "./App";
+import {Button} from "./components/Button";
 
 
 type TodoListPropsType = {
@@ -65,7 +66,8 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
             <input type="checkbox" checked={t.isDone}/>
             <span>{t.title}</span>
             {/*ссылка на Функцию удаления не общая. мы не можем вынести ее наверх.она своя у каждой <li> */}
-            <button onClick={onRemoveHandler}>x</button>
+            {/*<button onClick={onRemoveHandler}>x</button>*/}
+            <Button name={"x"} callBack={onRemoveHandler}/>
         </li>)
     })
 
@@ -82,16 +84,22 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
                        onKeyPress={onKeyPressHandler}
                 />
                 {/*по нажатию добавляет новую task( в параметрах ссылка на функцию addTaskHandler)*/}
-                <button onClick={addTaskHandler}>+</button>
+                {/*<button onClick={addTaskHandler}>+</button>*/}
+                {/*выше оставил старый вариант*/}
+                <Button name={"+"} callBack={addTaskHandler}/>
             </div>
             <ul>
                 {mapped}
             </ul>
             <div>
                 {/*//передаем !!!ссылку на функцию!!! в кнопки. при клике говорим что вызывай функцию обработчик.onAllClickHandler onActiveClickHandler onCompletedClickHandler*/}
-                <button onClick={onAllClickHandler}>All</button>
-                <button onClick={onActiveClickHandler}>Active</button>
-                <button onClick={onCompletedClickHandler}>Completed</button>
+                {/*<button onClick={onAllClickHandler}>All</button>*/}
+                {/*<button onClick={onActiveClickHandler}>Active</button>*/}
+                {/*<button onClick={onCompletedClickHandler}>Completed</button>*/}
+                {/*выше оставил старый вариант*/}
+                <Button name={'All'} callBack={onAllClickHandler}/>
+                <Button name={'Active'} callBack={onActiveClickHandler}/>
+                <Button name={'Completed'} callBack={onCompletedClickHandler}/>
             </div>
         </div>
     )
