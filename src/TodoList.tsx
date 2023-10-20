@@ -43,9 +43,15 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
 
     //функция добавления новой задачи
     const addTaskHandler = () => {
-        addTask(newTaskTitle)
-        //очищаем значение в state вызываем  setNewTaskTitle("") и добавляем пустую строку
-        setNewTaskTitle("")
+        //если newTaskTitle === пустой строке то делаем return тоесть эта функция дальше не выполняется
+        //так же добавляем функцию .trim() - она обрезает с двух сторон пробелы
+        if (newTaskTitle.trim() === "") {
+
+            addTask(newTaskTitle)
+            //очищаем значение в state вызываем  setNewTaskTitle("") и добавляем пустую строку
+            setNewTaskTitle("");
+        }
+
     }
 
     //ФУНКЦИИ С ФИЛЬТРАМИ
