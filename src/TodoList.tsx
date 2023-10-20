@@ -11,6 +11,7 @@ type TodoListPropsType = {
     removeTask: (taskId: string) => void
     changeFilter: (value: FilterValuesType) => void
     addTask: (title: string) => void // функция которая не принимает ничего и не возвращает ничего
+    changeTaskStatus: (taskId : string, isDone : boolean) => void
 }
 
 export type TaskType = {
@@ -21,7 +22,7 @@ export type TaskType = {
 
 
 //в props передаем данные . которые в свою очередь управляются PropsType которые описаны выше
-const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, changeFilter}) => {
+const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, changeFilter,changeTaskStatus}) => {
     const [newTaskTitle, setNewTaskTitle] = useState("")
 
 
@@ -52,6 +53,7 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
     const onActiveClickHandler = () => changeFilter("active");
     const onCompletedClickHandler = () => changeFilter("completed");
 
+
     // Выносим функцию map в отдельную переменную
     {/*проходимся map вызывает стрелочную функцию внутри мы создаем новую функцию колбек
      которой передаем каждую кнопку х по этому у каждой кнопки x свой колбек */
@@ -62,8 +64,16 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
         const onRemoveHandler = () => {
             removeTask(t.id)
         }
+
+        //объявляем функцию onClickHandler по изменению чекбокса
+         // в параметрах передаем событие назовем его e : ChangeEvent<HTMLInputElement>
+        //e это информация о событии объект или как пропс и внутри него сидит ChangeEvent<HTMLInputElement>
+        const onChangeHandler = (e : ChangeEvent<HTMLInputElement>) => {
+            changeTaskStatus(t.id, e.currentTarget.checked)
+        }
+
         return (<li key={t.id}>
-            <input type="checkbox" checked={t.isDone}/>
+            <input type="checkbox" onChange={onChangeHandler} checked={t.isDone}/>
             <span>{t.title}</span>
             {/*ссылка на Функцию удаления не общая. мы не можем вынести ее наверх.она своя у каждой <li> */}
             {/*<button onClick={onRemoveHandler}>x</button>*/}
@@ -82,6 +92,7 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
                     //по скольку печатаем в инпуте соответственно и наблюдателя функцию onKeyPress вешаем сюда же
                     //когда произойдет нажатие клавиши вызови нашу функцию onKeyPressHandler,сюда придет объект event
                        onKeyPress={onKeyPressHandler}
+
                 />
                 {/*по нажатию добавляет новую task( в параметрах ссылка на функцию addTaskHandler)*/}
                 {/*<button onClick={addTaskHandler}>+</button>*/}
