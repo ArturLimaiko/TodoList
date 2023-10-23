@@ -23,9 +23,12 @@ function App() {
             {id: v1(), isDone: false, title: "Redux"},
         ]
     );
-    console.log(tasks)
 
-        //функция хранения значения чекбокса
+    //фильтрация задач
+    let [filter, setFilter] = useState<FilterValuesType>("all");
+
+
+    //функция хранения значения чекбокса
         // 2м параметром функции подсказываем на какое значение поменять - isDone : boolean
     // далее нам нужно функцию changeStatus прокинуть вниз через пропсы
     function changeStatus(taskId : string, isDone : boolean) {
@@ -65,9 +68,6 @@ function App() {
         // мы говорим tasks - ты массив - раскукожься на части и засунься внутрь нового массива
         setTasks([...tasks]);
     }
-
-    //фильтрация задач
-    let [filter, setFilter] = useState<FilterValuesType>("all");
 
     //функция удаления задач
     function removeTask(id: string) {
@@ -114,6 +114,7 @@ function App() {
                 changeFilter={changeFilter}
                 addTask={addTask}//addTask без скобок!иначе будет зацикливание - бесконечный цикл
                 changeTaskStatus={changeStatus}
+                filter={filter}
             />
         </div>
     );

@@ -15,6 +15,7 @@ type TodoListPropsType = {
     changeFilter: (value: FilterValuesType) => void
     addTask: (title: string) => void // функция которая не принимает ничего и не возвращает ничего
     changeTaskStatus: (taskId : string, isDone : boolean) => void //функция принимает taskId : string, isDone : boolean и значение isDone
+    filter: FilterValuesType
 }
 
 export type TaskType = {
@@ -25,7 +26,7 @@ export type TaskType = {
 
 
 //в props передаем данные . которые в свою очередь управляются PropsType которые описаны выше
-const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, changeFilter,changeTaskStatus}) => {
+const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, changeFilter,changeTaskStatus ,filter}) => {
     const [newTaskTitle, setNewTaskTitle] = useState("")
 
     //заводим новый стейт который в себе хранит ошибку.изначальное значение либо пустая строка либо null
@@ -88,7 +89,7 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
             changeTaskStatus(t.id, e.currentTarget.checked)
         }
 
-        return (<li key={t.id}>
+        return (<li key={t.id} className={t.isDone ? 'is-done': ""}>
             <input type="checkbox"
                    onChange={onChangeHandler}
                    checked={t.isDone}/>
@@ -98,6 +99,8 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
             <Button name={"x"} callBack={onRemoveHandler}/>
         </li>)
     })
+
+
 
     return (
         <div className="todolist">
@@ -132,9 +135,9 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
                 {/*<button onClick={onActiveClickHandler}>Active</button>*/}
                 {/*<button onClick={onCompletedClickHandler}>Completed</button>*/}
                 {/*выше оставил старый вариант*/}
-                <Button name={'All'} callBack={onAllClickHandler}/>
-                <Button name={'Active'} callBack={onActiveClickHandler}/>
-                <Button name={'Completed'} callBack={onCompletedClickHandler}/>
+                <Button name={'All'} callBack={onAllClickHandler} filter={filter}/>
+                <Button name={'Active'} callBack={onActiveClickHandler} filter={filter}/>
+                <Button name={'Completed'} callBack={onCompletedClickHandler} filter={filter}/>
             </div>
         </div>
     )
