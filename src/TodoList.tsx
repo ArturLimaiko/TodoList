@@ -3,6 +3,9 @@ import {FilterValuesType} from "./App";
 import {Button} from "./components/Button";
 
 
+
+
+
 type TodoListPropsType = {
     title: string
     tasks: Array<TaskType>
@@ -11,7 +14,7 @@ type TodoListPropsType = {
     removeTask: (taskId: string) => void
     changeFilter: (value: FilterValuesType) => void
     addTask: (title: string) => void // функция которая не принимает ничего и не возвращает ничего
-    changeTaskStatus: (taskId : string, isDone : boolean) => void
+    changeTaskStatus: (taskId : string, isDone : boolean) => void //функция принимает taskId : string, isDone : boolean и значение isDone
 }
 
 export type TaskType = {
@@ -25,6 +28,9 @@ export type TaskType = {
 const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, changeFilter,changeTaskStatus}) => {
     const [newTaskTitle, setNewTaskTitle] = useState("")
 
+    //заводим новый стейт который в себе хранит ошибку.изначальное значение либо пустая строка либо null
+    const [error, setError] = useState<string | null>(null) //тут говорим что useState хранит либо строку либо null значение
+
 
 //ТУТ ХРАНИМ анонимные функции ,которые мы передаем на различные события
     //функция для обработчика onChange, в параметрах указали - event : ChangeEvent<HTMLInputElement>
@@ -35,6 +41,7 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
     // функция для обработчика onKeyPress, по скольку функцию вынесли из инпута то надо ее протипизировать что бы реакт понял что мы хотим
     // по этому в параметрах указали - event: KeyboardEvent<HTMLInputElement>
     const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        setError(null)
         if (event.key === "Enter") {//если нажали  клавишу ENTER то таска добавится
             addTask(newTaskTitle) //добавляется таска
             setNewTaskTitle("") //после как таска добавилась строка ввода очиститься
@@ -45,11 +52,14 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
     const addTaskHandler = () => {
         //если newTaskTitle === пустой строке то делаем return тоесть эта функция дальше не выполняется
         //так же добавляем функцию .trim() - она обрезает с двух сторон пробелы
-        if (newTaskTitle.trim() === "") {
+        if (newTaskTitle.trim() !== "") {
 
             addTask(newTaskTitle)
             //очищаем значение в state вызываем  setNewTaskTitle("") и добавляем пустую строку
             setNewTaskTitle("");
+        } else {
+            // в иначе тут ситуация -  когда title = пустой строке - то выдаем ошибку
+            setError("Title is required");
         }
 
     }
@@ -79,7 +89,9 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
         }
 
         return (<li key={t.id}>
-            <input type="checkbox" onChange={onChangeHandler} checked={t.isDone}/>
+            <input type="checkbox"
+                   onChange={onChangeHandler}
+                   checked={t.isDone}/>
             <span>{t.title}</span>
             {/*ссылка на Функцию удаления не общая. мы не можем вынести ее наверх.она своя у каждой <li> */}
             {/*<button onClick={onRemoveHandler}>x</button>*/}
@@ -99,11 +111,17 @@ const TodoList: FC<TodoListPropsType> = ({title, tasks, removeTask, addTask, cha
                     //когда произойдет нажатие клавиши вызови нашу функцию onKeyPressHandler,сюда придет объект event
                        onKeyPress={onKeyPressHandler}
 
+                   //если  класс error существует то тогда показывай этот error
+                   className={error ? "error" : ""}
+
                 />
                 {/*по нажатию добавляет новую task( в параметрах ссылка на функцию addTaskHandler)*/}
                 {/*<button onClick={addTaskHandler}>+</button>*/}
                 {/*выше оставил старый вариант*/}
                 <Button name={"+"} callBack={addTaskHandler}/>
+
+                {/*если ошибка существует то тогда показывай этот div*/}
+                {error && <div className="error-message">{error}</div>}
             </div>
             <ul>
                 {mapped}
