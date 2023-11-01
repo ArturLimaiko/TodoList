@@ -6,6 +6,13 @@ import {v1} from "uuid";
 
 export type FilterValuesType = "all" | "completed" | "active";
 
+//тип который описывает todolist
+type TodolistType = {
+    id: string
+    title:string
+    filter:FilterValuesType
+}
+
 //компонента App которая отрисовывает внутри себя Todolist
 function App() {
 
@@ -28,8 +35,8 @@ function App() {
     let [filter, setFilter] = useState<FilterValuesType>("all");
 
 
-    //функция хранения значения чекбокса
-        // 2м параметром функции подсказываем на какое значение поменять - isDone : boolean
+    // функция хранения значения чекбокса
+    // 2м параметром функции подсказываем на какое значение поменять - isDone : boolean
     // далее нам нужно функцию changeStatus прокинуть вниз через пропсы
     function changeStatus(taskId : string, isDone : boolean) {
         // с помощью замыкания обратимся к переменной tasks которая лежит за пределами это функции
@@ -89,10 +96,13 @@ function App() {
         setTasks(newTasks); // - тут засовываем новый массив с добавленной  новой newTask
     }
 
+    //вначале все таски попадут в тудулист
     let tasksForTodolist = tasks;
+//тут говорим отсортируй не все а только те которые не выполнены
     if (filter === "completed") {
         tasksForTodolist = tasks.filter( t => t.isDone === true);
     }
+    //затем пробегаемся фильтром и говорит отсортируй не все а только выполнены
     if (filter === "active") {
         tasksForTodolist = tasks.filter( t => t.isDone === false);
     }
@@ -101,21 +111,33 @@ function App() {
         setFilter(value);
     }
 
+    let todolist:Array<TodolistType> = [
+        {id: v1(), title: "What to learn", filter: "active"},
+        {id: v1(), title: "What to buy", filter: "completed"}
+    ]
+
     //каждый Todolist получает на входе какие то данные - props. пропсы
     // а так же получаем колбеки
     //   removeTask={removeTask}
     //   changeFilter={changeFilter}
     return (
         <div className="App">
-            <TodoList
-                tasks={tasksForTodolist}
-                title={todoListTitle_1}
-                removeTask={removeTask}
-                changeFilter={changeFilter}
-                addTask={addTask}//addTask без скобок!иначе будет зацикливание - бесконечный цикл
-                changeTaskStatus={changeStatus}
-                filter={filter}
-            />
+            {/*//пробегаемся map по тудулисту*/}
+            {todolist.map( (tl) => {
+
+                    return   <TodoList
+                        tasks={tasksForTodolist}
+                        title={tl.title}
+                        removeTask={removeTask}
+                        changeFilter={changeFilter}
+                        addTask={addTask}//addTask без скобок!иначе будет зацикливание - бесконечный цикл
+                        changeTaskStatus={changeStatus}
+                        filter={tl.filter}
+                    />
+                }
+            )}
+
+
         </div>
     );
 }
